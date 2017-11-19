@@ -1,0 +1,21 @@
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'maven'
+}
+
+group 'ru.coutvv'
+version '1.0-wakeup'
+sourceCompatibility = 1.9
+
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
