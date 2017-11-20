@@ -1,7 +1,6 @@
 package ru.coutvv.timeloop.state;
 
 import ru.coutvv.timeloop.Context;
-import ru.coutvv.timeloop.ioservice.ObservableChat;
 import ru.coutvv.timeloop.util.WaitUtil;
 
 /**
@@ -13,23 +12,23 @@ public class StateStretching extends State{
 
     private final long STRETCHING_TIMEOUT = 60_000;
 
-    public StateStretching(Context context, ObservableChat chat) {
-        super(context, chat);
+    public StateStretching(Context context) {
+        super(context);
     }
 
     @Override
     public void operation() {
-        chat.send("just some typical message for wait");
-        chat.send("stretch!!!");
+        send("just some typical message for wait");
+        send("stretch!!!");
         WaitUtil.lag(STRETCHING_TIMEOUT);
-        chat.send("end of stretch");
+        send("end of stretch");
 
-        State next = new StateShower(context, chat);
-        chat.setObserver(next);
+        State next = new StateShower(context);
         context.setState(next);
     }
     @Override
     public void handleEvent(String message) {
+
 
 
     }

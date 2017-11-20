@@ -12,11 +12,10 @@ import java.time.LocalTime;
 public class TestMorningAlgorithm {
 
     public static void main(String[] args) {
-        Context context = new Context();
         ObservableChat chat = new SysoutChat();
-        State wait = new StateWait(context, chat, LocalTime.of(3, 32));
-        chat.setObserver(wait);
-        context.setState(wait);
+        LocalTime time = LocalTime.now().plusSeconds(1);
+        Context context = new Context(chat, time);
+        context.run();
     }
 
 }

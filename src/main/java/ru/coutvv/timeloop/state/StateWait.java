@@ -1,10 +1,11 @@
 package ru.coutvv.timeloop.state;
 
 import ru.coutvv.timeloop.Context;
-import ru.coutvv.timeloop.ioservice.ObservableChat;
+import ru.coutvv.timeloop.util.WaitUtil;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalAmount;
+import java.util.function.BooleanSupplier;
 
 /**
  * @author coutvv    20.11.2017
@@ -13,27 +14,33 @@ public class StateWait extends State {
 
     private final LocalTime startTime;
 
-    public StateWait(Context context, ObservableChat chat, LocalTime time) {
-        super(context, chat);
-        startTime = time;
-    }
+    private BooleanSupplier itsTime;
 
+    public StateWait(Context context, LocalTime time) {
+        super(context);
+        startTime = time;
+
+        itsTime = () -> LocalTime.now().isAfter(startTime);
+        if(startTime.isBefore(LocalTime.now())) {
+            LocalDateTime date = LocalDateTime.now().plusDays(1);
+            date.with(startTime);
+            itsTime = () -> date.isBefore(LocalDateTime.now());
+        }
+    }
 
     @Override
     public void operation() {
-        LocalTime time = LocalTime.now();
-        chat.send("wait for");
-        while(time.isBefore(startTime)) {
-            Thread.yield();
-            time = LocalTime.now();
-        }
-        State terror = new StateTerror(context, chat);
-        chat.setObserver(terror);
+        send("wait for");
+        WaitUtil.waitUntil(itsTime);
+
+        State terror = new StateTerror(context);
         context.setState(terror);
     }
 
+    private final String WAIT_ANSWER = "we wait for alarm clock";
+
     @Override
     public void handleEvent(String message) {
-        chat.send(message);
+        send(WAIT_ANSWER);
     }
 }

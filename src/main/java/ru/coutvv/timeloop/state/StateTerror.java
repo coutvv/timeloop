@@ -14,23 +14,22 @@ public class StateTerror extends State {
     private boolean isAwake = false;
 
     private final int KEY_SIZE = 20;
-    private final int RESET_KEY_TIMEOUT = 60000;
+    private final int RESET_KEY_TIMEOUT = 60_000;
     private String key;
 
-    public StateTerror(Context context, ObservableChat chat) {
-        super(context, chat);
+    public StateTerror(Context context) {
+        super(context);
     }
 
     @Override
     public void operation() {
         while(!isAwake) {
             key = generateKey();
-            chat.send("Wake up!");
-            chat.send("Key is:\n" + key);
-            WaitUtil.lag(RESET_KEY_TIMEOUT);
+            send("Wake up!");
+            send("Key is:\n" + key);
+            WaitUtil.lagUntil(() -> isAwake, RESET_KEY_TIMEOUT);
         }
-        State next = new StateStretching(context, chat);
-        chat.setObserver(next);
+        State next = new StateStretching(context);
         context.setState(next);
     }
 
@@ -38,8 +37,11 @@ public class StateTerror extends State {
     public void handleEvent(String message) {
         if(message.equals(key)){
             isAwake = true;
-            chat.send("key confirmed");
+            send("key confirmed");
+        } else {
+            send("wrong key");
         }
+
     }
 
     private String generateKey() {
