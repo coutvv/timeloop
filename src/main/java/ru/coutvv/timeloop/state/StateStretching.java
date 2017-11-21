@@ -1,6 +1,6 @@
 package ru.coutvv.timeloop.state;
 
-import ru.coutvv.timeloop.Context;
+import ru.coutvv.timeloop.bot.Context;
 
 /**
  * @author coutvv    20.11.2017

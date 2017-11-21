@@ -1,6 +1,6 @@
 package ru.coutvv.timeloop.state;
 
-import ru.coutvv.timeloop.Context;
+import ru.coutvv.timeloop.bot.Context;
 
 import java.util.Random;
 
@@ -25,6 +25,7 @@ public class StateTerror extends State {
             key = generateKey();
             send("It's time to WAKEUP!");
             send("Key is:\n" + key);
+            send("After minute it'll be reset");
         });
 
         switchState(new StateStretching(getContext()));
@@ -33,11 +34,11 @@ public class StateTerror extends State {
     @Override
     public void handleMsg(String message) {
         if(message.equals(key)){
-            send("key confirmed");
-            send("I believe you awake...");
+            send("Key confirmed");
+            send("Well, I believe you awake...");
             isAwake = true;
         } else {
-            send("wrong key");
+            send("Wrong key");
         }
 
     }

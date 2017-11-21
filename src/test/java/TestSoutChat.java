@@ -10,7 +10,7 @@ public class TestSoutChat {
         ObservableChat sysChat = new SysoutChat();
         ChatObserver observer = (message) -> System.out.println("obs get message: " + message);
 
-        sysChat.setObserver(observer);
+        sysChat.addObserver(observer);
 
         System.out.println("after chat");
         sysChat.closeChat();

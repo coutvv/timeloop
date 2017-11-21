@@ -14,7 +14,7 @@ public class TestObservableChat {
         ObservableChat sysChat = new SysoutChat();
         ChatObserver observer = (message) -> System.out.println("obs get message: " + message);
 
-        sysChat.setObserver(observer);
+        sysChat.addObserver(observer);
         Runnable runnable = () -> {
             try {
                 Thread.sleep(2000);

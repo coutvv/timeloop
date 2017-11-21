@@ -1,6 +1,6 @@
 package ru.coutvv.timeloop.state;
 
-import ru.coutvv.timeloop.Context;
+import ru.coutvv.timeloop.bot.Context;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,13 +12,14 @@ import java.util.function.BooleanSupplier;
  */
 public class StateWait extends State {
 
-    private final LocalTime startTime;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
+    private final LocalTime startTime;
     private BooleanSupplier itsTime;
 
-    public StateWait(Context context, LocalTime time) {
+    public StateWait(Context context) {
         super(context);
-        startTime = time;
+        startTime = context.getSettings().alarmTime;
 
         itsTime = () -> LocalTime.now().isAfter(startTime);
         if(startTime.isBefore(LocalTime.now())) {
@@ -30,7 +31,7 @@ public class StateWait extends State {
 
     @Override
     public void operation() {
-        send("Alarm clock set at " + startTime.format(DateTimeFormatter.ofPattern("hh:mm")));
+        send("Alarm clock set at " + startTime.format(FORMATTER));
         lag.until(itsTime);
         send("Good Morning! I wish you a good day! Let's start it with me!");
         lag.until(1000);
@@ -40,6 +41,6 @@ public class StateWait extends State {
 
     @Override
     public void handleMsg(String message) {
-        send("We wait alarm clock at " + startTime.format(DateTimeFormatter.ofPattern("hh:mm")));
+        send("We wait alarm clock at " + startTime.format(FORMATTER));
     }
 }

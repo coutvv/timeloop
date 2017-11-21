@@ -1,6 +1,6 @@
 package ru.coutvv.timeloop.state;
 
-import ru.coutvv.timeloop.Context;
+import ru.coutvv.timeloop.bot.Context;
 import ru.coutvv.timeloop.ioservice.ChatObserver;
 
 import java.util.function.BooleanSupplier;
@@ -22,19 +22,17 @@ public abstract class State implements ChatObserver {
         this.context = context;
     }
 
+    public void stop() {
+        skipLever = true;
+    }
+
     public abstract void operation();
 
     @Override
     public final void handleEvent(String message) {
         //global messages here!
         if(message == null) { return; }
-        if(message.equals("/stop")) {
-           skipLever = true;
-        } if(message.equals("/help")) {
-
-        } if(message.equals("/settings")) {
-
-        } else {
+        else {
             handleMsg(message);
         }
 
