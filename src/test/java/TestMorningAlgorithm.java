@@ -1,8 +1,6 @@
 import ru.coutvv.timeloop.Context;
 import ru.coutvv.timeloop.ioservice.ObservableChat;
 import ru.coutvv.timeloop.ioservice.SysoutChat;
-import ru.coutvv.timeloop.state.State;
-import ru.coutvv.timeloop.state.StateWait;
 
 import java.time.LocalTime;
 
@@ -16,6 +14,7 @@ public class TestMorningAlgorithm {
         LocalTime time = LocalTime.now().plusSeconds(1);
         Context context = new Context(chat, time);
         context.run();
+        chat.closeChat();
     }
 
 }
