@@ -1,5 +1,7 @@
 package ru.coutvv.timeloop.ioservice;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,17 +10,18 @@ import java.io.InputStreamReader;
  * @author coutvv    20.11.2017
  */
 public class SysoutChat extends ObservableChat {
+    private final static Logger logger = Logger.getLogger(SysoutChat.class);
     private boolean isRead = true;
+    private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public SysoutChat() {
         Runnable read = () -> {
             while(isRead) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
                 String message = null;
                 try {
                     message = br.readLine();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("problem with reading in console:\n" + e.getLocalizedMessage());
                 }
                 this.notifyObserver(message);
                 Thread.yield();
@@ -35,6 +38,11 @@ public class SysoutChat extends ObservableChat {
     @Override
     public void closeChat() {
         isRead = false;
+        try {
+            System.in.close();
+        } catch (IOException e) {
+            logger.error("problem with closing system.in \n"+ e.getLocalizedMessage());
+        }
     }
 
 
