@@ -1,11 +1,14 @@
 package ru.coutvv.timeloop.util;
 
+import org.apache.log4j.Logger;
+
 import java.util.function.BooleanSupplier;
 
 /**
  * @author coutvv    20.11.2017
  */
 public class WaitUtil {
+    private final static Logger logger = Logger.getLogger(WaitUtil.class);
 
     private static long TIME_SLICE = 10;
 
@@ -13,7 +16,7 @@ public class WaitUtil {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("can't lag:" + e.getLocalizedMessage());
         }
     }
 

@@ -1,10 +1,10 @@
 package ru.coutvv.timeloop.state;
 
 import ru.coutvv.timeloop.Context;
-import ru.coutvv.timeloop.util.WaitUtil;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -20,26 +20,26 @@ public class StateWait extends State {
         super(context);
         startTime = time;
 
-        itsTime = () -> LocalTime.now().isAfter(startTime) && !skipLever;
+        itsTime = () -> LocalTime.now().isAfter(startTime);
         if(startTime.isBefore(LocalTime.now())) {
             LocalDateTime date = LocalDateTime.now().plusDays(1);
             date.with(startTime);
-            itsTime = () -> date.isBefore(LocalDateTime.now()) && !skipLever;
+            itsTime = () -> date.isBefore(LocalDateTime.now());
         }
     }
 
     @Override
     public void operation() {
-        send("wait for");
-        WaitUtil.waitUntil(itsTime);
+        send("Alarm clock set at " + startTime.format(DateTimeFormatter.ofPattern("hh:mm")));
+        lag.until(itsTime);
+        send("Good Morning! I wish you a good day! Let's start it with me!");
+        lag.until(1000);
 
         switchState(new StateTerror(getContext()));
     }
 
-    private final String WAIT_ANSWER = "we wait for alarm clock";
-
     @Override
     public void handleMsg(String message) {
-        send(WAIT_ANSWER);
+        send("We wait alarm clock at " + startTime.format(DateTimeFormatter.ofPattern("hh:mm")));
     }
 }

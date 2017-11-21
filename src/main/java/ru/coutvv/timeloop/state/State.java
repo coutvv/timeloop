@@ -3,6 +3,10 @@ package ru.coutvv.timeloop.state;
 import ru.coutvv.timeloop.Context;
 import ru.coutvv.timeloop.ioservice.ChatObserver;
 
+import java.util.function.BooleanSupplier;
+
+import static ru.coutvv.timeloop.util.WaitUtil.lag;
+
 /**
  * state
  */
@@ -12,7 +16,7 @@ public abstract class State implements ChatObserver {
     /**
      * use to stop progress in states and exit
      */
-    protected boolean skipLever = false;
+    private boolean skipLever = false;
 
     State(Context context) {
         this.context = context;
@@ -23,6 +27,7 @@ public abstract class State implements ChatObserver {
     @Override
     public final void handleEvent(String message) {
         //global messages here!
+        if(message == null) { return; }
         if(message.equals("/stop")) {
            skipLever = true;
         } if(message.equals("/help")) {
@@ -35,19 +40,47 @@ public abstract class State implements ChatObserver {
 
     }
 
-    public Context getContext() {
+    protected Context getContext() {
        return context;
     }
 
-    public abstract void handleMsg(String message);
+    protected abstract void handleMsg(String message);
 
     protected void send(String message) {
         if(skipLever) return;
         context.sendMessage(message);
+        lag.until(500);//delay after send message
     }
 
     protected void switchState(State next) {
         if(skipLever) return;
         context.setState(next);
+    }
+
+    protected Lag lag = new Lag();
+
+    protected class Lag {
+        private int TIME_SLICE = 10;
+        public void until(BooleanSupplier itsTime) {
+            while(!itsTime.getAsBoolean() && !skipLever) {
+                Thread.yield();
+            }
+        }
+        public void until(long ms) {
+            until(() ->false, ms);
+        }
+        public void until(BooleanSupplier itsTime, long msTimeout) {
+            long timeout = 0;
+            while(!itsTime.getAsBoolean() && timeout < msTimeout && !skipLever) {
+                timeout += TIME_SLICE;
+                lag(TIME_SLICE);
+            }
+        }
+        public void repeatAfter(BooleanSupplier exitCondition, long msTimeout, Runnable action) {
+            while(!skipLever && !exitCondition.getAsBoolean()) {
+                action.run();
+                until(exitCondition, msTimeout);
+            }
+        }
     }
 }
