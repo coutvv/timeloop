@@ -40,7 +40,7 @@ public class StateWait extends State {
     private final String WAIT_ANSWER = "we wait for alarm clock";
 
     @Override
-    public void handleEvent(String message) {
+    public void handleMsg(String message) {
         send(WAIT_ANSWER);
     }
 }

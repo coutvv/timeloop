@@ -5,6 +5,7 @@ import ru.coutvv.timeloop.ioservice.ObservableChat;
 import ru.coutvv.timeloop.util.WaitUtil;
 
 import java.util.Random;
+import java.util.function.BooleanSupplier;
 
 /**
  * @author coutvv    20.11.2017
@@ -12,6 +13,7 @@ import java.util.Random;
 public class StateTerror extends State {
 
     private boolean isAwake = false;
+    private BooleanSupplier waitCondition = () -> isAwake && !skip;
 
     private final int KEY_SIZE = 20;
     private final int RESET_KEY_TIMEOUT = 60_000;
@@ -34,7 +36,7 @@ public class StateTerror extends State {
     }
 
     @Override
-    public void handleEvent(String message) {
+    public void handleMsg(String message) {
         if(message.equals(key)){
             isAwake = true;
             send("key confirmed");

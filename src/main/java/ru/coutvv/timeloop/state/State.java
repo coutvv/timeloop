@@ -9,6 +9,7 @@ import ru.coutvv.timeloop.ioservice.ChatObserver;
 public abstract class State implements ChatObserver {
 
     final Context context;
+    protected boolean skip = false;
 
     State(Context context) {
         this.context = context;
@@ -17,10 +18,21 @@ public abstract class State implements ChatObserver {
     public abstract void operation();
 
     @Override
-    public void handleEvent(String message) {
+    public final void handleEvent(String message) {
         //global messages here!
+        if(message.equals("/skip")) {
+           skip = true;
+        } if(message.equals("/help")) {
+
+        } if(message.equals("/settings")) {
+
+        } else {
+            handleMsg(message);
+        }
 
     }
+
+    public abstract void handleMsg(String message);
 
     protected void send(String message) {
         context.sendMessage(message);
