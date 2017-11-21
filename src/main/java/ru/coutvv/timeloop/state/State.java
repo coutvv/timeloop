@@ -8,8 +8,11 @@ import ru.coutvv.timeloop.ioservice.ChatObserver;
  */
 public abstract class State implements ChatObserver {
 
-    final Context context;
-    protected boolean skip = false;
+    private final Context context;
+    /**
+     * use to stop progress in states and exit
+     */
+    protected boolean skipLever = false;
 
     State(Context context) {
         this.context = context;
@@ -20,8 +23,8 @@ public abstract class State implements ChatObserver {
     @Override
     public final void handleEvent(String message) {
         //global messages here!
-        if(message.equals("/skip")) {
-           skip = true;
+        if(message.equals("/stop")) {
+           skipLever = true;
         } if(message.equals("/help")) {
 
         } if(message.equals("/settings")) {
@@ -32,9 +35,19 @@ public abstract class State implements ChatObserver {
 
     }
 
+    public Context getContext() {
+       return context;
+    }
+
     public abstract void handleMsg(String message);
 
     protected void send(String message) {
+        if(skipLever) return;
         context.sendMessage(message);
+    }
+
+    protected void switchState(State next) {
+        if(skipLever) return;
+        context.setState(next);
     }
 }

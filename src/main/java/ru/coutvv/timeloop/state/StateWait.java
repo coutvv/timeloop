@@ -20,11 +20,11 @@ public class StateWait extends State {
         super(context);
         startTime = time;
 
-        itsTime = () -> LocalTime.now().isAfter(startTime);
+        itsTime = () -> LocalTime.now().isAfter(startTime) && !skipLever;
         if(startTime.isBefore(LocalTime.now())) {
             LocalDateTime date = LocalDateTime.now().plusDays(1);
             date.with(startTime);
-            itsTime = () -> date.isBefore(LocalDateTime.now());
+            itsTime = () -> date.isBefore(LocalDateTime.now()) && !skipLever;
         }
     }
 
@@ -33,8 +33,7 @@ public class StateWait extends State {
         send("wait for");
         WaitUtil.waitUntil(itsTime);
 
-        State terror = new StateTerror(context);
-        context.setState(terror);
+        switchState(new StateTerror(getContext()));
     }
 
     private final String WAIT_ANSWER = "we wait for alarm clock";

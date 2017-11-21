@@ -17,7 +17,7 @@ public class StateShower extends State {
     @Override
     public void operation() {
         send("I wait you for shower!! please ask me when you done");
-        WaitUtil.waitUntil(() -> done && !skip);
+        WaitUtil.waitUntil(() -> done && !skipLever);
 
         send("Yeah! your day has started now! wakeup body process go to phase #2");
         //TODO: go to phase #2

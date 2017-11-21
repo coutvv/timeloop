@@ -1,7 +1,6 @@
 package ru.coutvv.timeloop.state;
 
 import ru.coutvv.timeloop.Context;
-import ru.coutvv.timeloop.ioservice.ObservableChat;
 import ru.coutvv.timeloop.util.WaitUtil;
 
 import java.util.Random;
@@ -13,7 +12,7 @@ import java.util.function.BooleanSupplier;
 public class StateTerror extends State {
 
     private boolean isAwake = false;
-    private BooleanSupplier waitCondition = () -> isAwake && !skip;
+    private BooleanSupplier waitCondition = () -> isAwake && !skipLever;
 
     private final int KEY_SIZE = 20;
     private final int RESET_KEY_TIMEOUT = 60_000;
@@ -31,8 +30,8 @@ public class StateTerror extends State {
             send("Key is:\n" + key);
             WaitUtil.lagUntil(() -> isAwake, RESET_KEY_TIMEOUT);
         }
-        State next = new StateStretching(context);
-        context.setState(next);
+
+        switchState(new StateStretching(getContext()));
     }
 
     @Override

@@ -20,11 +20,10 @@ public class StateStretching extends State{
     public void operation() {
         send("just some typical message for wait");
         send("stretch!!!");
-        WaitUtil.lagUntil(() -> skip, STRETCHING_TIMEOUT);//TODO: stretching list to exercise
+        WaitUtil.lagUntil(() -> skipLever, STRETCHING_TIMEOUT);//TODO: stretching list to exercise
         send("end of stretch");
 
-        State next = new StateShower(context);
-        context.setState(next);
+        switchState(new StateShower(getContext()));
     }
     @Override
     public void handleMsg(String message) {
