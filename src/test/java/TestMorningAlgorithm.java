@@ -1,5 +1,5 @@
 import ru.coutvv.timeloop.bot.Context;
-import ru.coutvv.timeloop.bot.SystemSettings;
+import ru.coutvv.timeloop.bot.setting.SystemSettings;
 import ru.coutvv.timeloop.io.ObservableChat;
 import ru.coutvv.timeloop.io.chat.SysoutChat;
 

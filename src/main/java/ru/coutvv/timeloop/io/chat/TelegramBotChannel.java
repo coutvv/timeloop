@@ -27,6 +27,7 @@ public class TelegramBotChannel extends TelegramLongPollingBot {
     public TelegramBotChannel(String botName, String botToken) {
         this.botName = botName;
         this.botToken = botToken;
+
     }
 
     @Override
@@ -58,6 +59,7 @@ public class TelegramBotChannel extends TelegramLongPollingBot {
     public void sendToChat(String message, Long chatId) {
         SendMessage msg = new SendMessage().setChatId(chatId).setText(message);
         try {
+            msg.setParseMode("html");
             execute(msg);
         } catch (TelegramApiException e) {
             logger.error("can't send message: " + message + "\n to: " + chatId + "\n" + e.getLocalizedMessage());

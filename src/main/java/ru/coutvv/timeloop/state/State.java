@@ -1,7 +1,10 @@
 package ru.coutvv.timeloop.state;
 
+import org.apache.log4j.Logger;
 import ru.coutvv.timeloop.bot.Context;
 import ru.coutvv.timeloop.io.ChatObserver;
+import ru.coutvv.timeloop.bot.setting.ConfigProperties;
+import ru.coutvv.timeloop.bot.setting.ConstConfig;
 
 import java.util.function.BooleanSupplier;
 
@@ -11,6 +14,7 @@ import static ru.coutvv.timeloop.util.WaitUtil.lag;
  * state
  */
 public abstract class State implements ChatObserver {
+    private static final Logger logger = Logger.getLogger(State.class);
 
     private final Context context;
     /**
@@ -31,11 +35,13 @@ public abstract class State implements ChatObserver {
     @Override
     public final void handleEvent(String message) {
         //global messages here!
-        if(message == null) { return; }
-        else {
+        if(message != null) {
             handleMsg(message);
         }
+    }
 
+    protected ConfigProperties props() {
+        return context.getSettings().getProperties();
     }
 
     protected Context getContext() {
@@ -48,6 +54,10 @@ public abstract class State implements ChatObserver {
         if(skipLever) return;
         context.sendMessage(message);
         lag.until(500);//delay after send message
+    }
+
+    protected void send(ConstConfig temp) {
+        send(props().txt(temp));
     }
 
     protected void switchState(State next) {

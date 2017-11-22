@@ -5,6 +5,8 @@ import ru.coutvv.timeloop.state.State;
 
 import java.util.Random;
 
+import static ru.coutvv.timeloop.bot.setting.ConstConfig.*;
+
 /**
  * @author coutvv    20.11.2017
  */
@@ -12,8 +14,6 @@ public class StateTerror extends State {
 
     private boolean isAwake = false;
 
-    private final int KEY_SIZE = 20;
-    private final int RESET_KEY_TIMEOUT = 60_000;
     private String key;
 
     public StateTerror(Context context) {
@@ -22,11 +22,13 @@ public class StateTerror extends State {
 
     @Override
     public void operation() {
-        lag.repeatAfter(() -> isAwake, RESET_KEY_TIMEOUT, () -> {
+        long timeout = props().lNum(TERROR_KEY_TIMEOUT);
+        lag.repeatAfter(() -> isAwake, timeout, () -> {
             key = generateKey();
-            send("It's time to WAKEUP!");
-            send("Key is:\n" + key);
-            send("After minute it'll be reset");
+            send(TERROR_WAKEUP);
+            send(TERROR_WARNING);
+            String template = props().txt(TERROR_PRESENT_KEY_TEMPLATE);
+            send(String.format(template, key));
         });
 
         switchState(new StateStretching(getContext()));
@@ -35,19 +37,19 @@ public class StateTerror extends State {
     @Override
     public void handleMsg(String message) {
         if(message.equals(key)){
-            send("Key confirmed");
-            send("Well, I believe you awake...");
+            send(TERROR_HANDLE_ACCEPT);
+            send(TERROR_HANDLE_ACCEPT_2);
             isAwake = true;
         } else {
-            send("Wrong key");
+            send(props().txt(TERROR_HANDLE_DENY));
         }
 
     }
 
     private String generateKey() {
         Random rand = new Random();
-        String alphabet = "abcdefghijklmnopqrstuwvxyz_";
-        char[] key = new char[KEY_SIZE];
+        String alphabet = props().txt(TERROR_KEY_SIGNS);
+        char[] key = new char[props().iNum(TERROR_KEY_SIZE)];
         for(int i = 0; i < key.length; i++) {
             key[i] = alphabet.charAt(rand.nextInt(alphabet.length()));
         }

@@ -8,6 +8,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.BooleanSupplier;
 
+import static ru.coutvv.timeloop.bot.setting.ConstConfig.*;
+
 /**
  * @author coutvv    20.11.2017
  */
@@ -32,9 +34,10 @@ public class StateWait extends State {
 
     @Override
     public void operation() {
-        send("Alarm clock set at " + startTime.format(FORMATTER));
+        String template = props().txt(WAIT_SET_ALARM_TEMPLATE);
+        send(String.format(template, startTime.format(FORMATTER)));
         lag.until(itsTime);
-        send("Good Morning! I wish you a good day! Let's start it with me!");
+        send(WAIT_AWAKE_MESSAGE);
         lag.until(1000);
 
         switchState(new StateTerror(getContext()));
@@ -42,6 +45,7 @@ public class StateWait extends State {
 
     @Override
     public void handleMsg(String message) {
-        send("We wait alarm clock at " + startTime.format(FORMATTER));
+        String template = props().txt(WAIT_HANDLE_TEMPLATE);
+        send(String.format(template, startTime.format(FORMATTER)));
     }
 }

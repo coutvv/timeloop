@@ -1,6 +1,7 @@
 package ru.coutvv.timeloop.bot;
 
 import org.apache.log4j.Logger;
+import ru.coutvv.timeloop.bot.setting.SystemSettings;
 import ru.coutvv.timeloop.io.ChatObserver;
 import ru.coutvv.timeloop.io.ObservableChat;
 
@@ -34,7 +35,7 @@ public class BotChatWrapper extends ObservableChat implements ChatObserver{
 
         } else if(message.equals(START)) {
             logger.warn("new user");
-            send("Hello! I'm glad to see you in my alarm clock chat!");
+            send("<b>Hello!</b> I'm glad to see you in my alarm clock chat!");
             send("to start using alarm clock send '/set', default time 5:50");
             send("to stop alarm clock send '/stop'");
             send("to set time send '/set hh:mm' \n for example: \n /set 5:15 \n set alarm clock to 5:15");
@@ -49,14 +50,14 @@ public class BotChatWrapper extends ObservableChat implements ChatObserver{
             send("to set time send '/set hh:mm' \n for example: \n /set 5:15 \n set alarm clock to 5:15");
         } else if(message.startsWith(SET)) {
             String ss[] = message.split(" ");
-            if(ss.length == 2) {
+            if (ss.length == 2) {
                 String hourMin[] = ss[1].split(":");
-                if(hourMin.length == 2 && isNumeric(hourMin[0]) && isNumeric(hourMin[1])) {
+                if (hourMin.length == 2 && isNumeric(hourMin[0]) && isNumeric(hourMin[1])) {
                     int hh = Integer.parseInt(hourMin[0]);
                     int mm = Integer.parseInt(hourMin[1]);
-                    if(hh >= 0 && hh < 24 && mm >= 0 && mm < 60) {
+                    if (hh >= 0 && hh < 24 && mm >= 0 && mm < 60) {
                         settings.alarmTime = LocalTime.of(hh, mm);
-                        if(context != null)
+                        if (context != null)
                             context.kill();
                         context = new Context(this, settings);
                         context.run();
@@ -66,14 +67,17 @@ public class BotChatWrapper extends ObservableChat implements ChatObserver{
                     send("not correct time");
                 }
             } else { //if user send just '/set'
-                if(context == null) {
+                if (context == null) {
                     context = new Context(this, settings);
                     context.run();
                 } else {
                     send("can't start again – last session is run");
                 }
             }
-
+        } else if(message.equals(RU)) {
+            settings.setProperties("app.ru.properties");
+        } else if(message.equals(EN)) {
+            settings.setProperties("app.properties");
         } else {
             notifyObservers(message);
         }

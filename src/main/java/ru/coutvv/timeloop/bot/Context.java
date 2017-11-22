@@ -1,6 +1,7 @@
 package ru.coutvv.timeloop.bot;
 
 import org.apache.log4j.Logger;
+import ru.coutvv.timeloop.bot.setting.SystemSettings;
 import ru.coutvv.timeloop.io.ObservableChat;
 import ru.coutvv.timeloop.state.State;
 import ru.coutvv.timeloop.state.wakeup.StateWait;

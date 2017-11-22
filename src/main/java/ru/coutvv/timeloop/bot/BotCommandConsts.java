@@ -5,4 +5,6 @@ public interface BotCommandConsts {
     String STOP = "/stop";
     String HELP = "/help";
     String SET = "/set";
+    String RU = "/ru";
+    String EN = "/en";
 }
