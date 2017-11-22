@@ -10,6 +10,8 @@ import static ru.coutvv.timeloop.bot.BotCommandConsts.*;
 /**
  * class for managing contexts and react on system command from user
  *
+ * wrapper between chat and context
+ *
  * @author coutvv    21.11.2017
  */
 public class BotChatWrapper extends ObservableChat implements ChatObserver{
@@ -17,8 +19,9 @@ public class BotChatWrapper extends ObservableChat implements ChatObserver{
     private static final Logger logger = Logger.getLogger(BotChatWrapper.class);
 
     private final ObservableChat chat;
-    private Context context;
     private final SystemSettings settings = new SystemSettings();
+
+    private Context context;
 
     public BotChatWrapper(ObservableChat chat) {
        this.chat = chat;
@@ -36,8 +39,10 @@ public class BotChatWrapper extends ObservableChat implements ChatObserver{
             send("to stop alarm clock send '/stop'");
             send("to set time send '/set hh:mm' \n for example: \n /set 5:15 \n set alarm clock to 5:15");
         } else if(message.equals(STOP)) {
-            context.kill();
+            if(context !=null)
+                context.kill();
             context = null;
+            send("alarm has stopped");
         } else if(message.equals(HELP)) {
             send("to start using alarm clock send '/set', default time 5:50");
             send("to stop alarm clock send '/stop'");
