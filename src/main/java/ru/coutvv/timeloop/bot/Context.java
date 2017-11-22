@@ -1,9 +1,9 @@
 package ru.coutvv.timeloop.bot;
 
 import org.apache.log4j.Logger;
-import ru.coutvv.timeloop.ioservice.ObservableChat;
+import ru.coutvv.timeloop.io.ObservableChat;
 import ru.coutvv.timeloop.state.State;
-import ru.coutvv.timeloop.state.StateWait;
+import ru.coutvv.timeloop.state.wakeup.StateWait;
 
 /**
  * Runnable context of alarming

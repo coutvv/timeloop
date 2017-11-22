@@ -1,6 +1,6 @@
 import ru.coutvv.timeloop.bot.BotChatWrapper;
-import ru.coutvv.timeloop.ioservice.ObservableChat;
-import ru.coutvv.timeloop.ioservice.SysoutChat;
+import ru.coutvv.timeloop.io.ObservableChat;
+import ru.coutvv.timeloop.io.chat.SysoutChat;
 
 /**
  * test chat with bot commands

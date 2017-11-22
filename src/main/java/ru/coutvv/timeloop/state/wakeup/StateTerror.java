@@ -1,6 +1,7 @@
-package ru.coutvv.timeloop.state;
+package ru.coutvv.timeloop.state.wakeup;
 
 import ru.coutvv.timeloop.bot.Context;
+import ru.coutvv.timeloop.state.State;
 
 import java.util.Random;
 

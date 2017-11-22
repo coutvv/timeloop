@@ -1,6 +1,6 @@
-import ru.coutvv.timeloop.ioservice.ChatObserver;
-import ru.coutvv.timeloop.ioservice.ObservableChat;
-import ru.coutvv.timeloop.ioservice.SysoutChat;
+import ru.coutvv.timeloop.io.ChatObserver;
+import ru.coutvv.timeloop.io.ObservableChat;
+import ru.coutvv.timeloop.io.chat.SysoutChat;
 
 /**
  * test console chat

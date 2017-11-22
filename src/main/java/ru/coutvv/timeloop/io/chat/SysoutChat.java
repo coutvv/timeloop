@@ -1,6 +1,7 @@
-package ru.coutvv.timeloop.ioservice;
+package ru.coutvv.timeloop.io.chat;
 
 import org.apache.log4j.Logger;
+import ru.coutvv.timeloop.io.ObservableChat;
 
 import java.io.BufferedReader;
 import java.io.IOException;

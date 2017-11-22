@@ -1,7 +1,7 @@
 import ru.coutvv.timeloop.bot.Context;
 import ru.coutvv.timeloop.bot.SystemSettings;
-import ru.coutvv.timeloop.ioservice.ObservableChat;
-import ru.coutvv.timeloop.ioservice.SysoutChat;
+import ru.coutvv.timeloop.io.ObservableChat;
+import ru.coutvv.timeloop.io.chat.SysoutChat;
 
 import java.time.LocalTime;
 

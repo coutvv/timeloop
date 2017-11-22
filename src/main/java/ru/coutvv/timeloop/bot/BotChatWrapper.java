@@ -1,8 +1,8 @@
 package ru.coutvv.timeloop.bot;
 
 import org.apache.log4j.Logger;
-import ru.coutvv.timeloop.ioservice.ChatObserver;
-import ru.coutvv.timeloop.ioservice.ObservableChat;
+import ru.coutvv.timeloop.io.ChatObserver;
+import ru.coutvv.timeloop.io.ObservableChat;
 
 import java.time.LocalTime;
 import static ru.coutvv.timeloop.bot.BotCommandConsts.*;

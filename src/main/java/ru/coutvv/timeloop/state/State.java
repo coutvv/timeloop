@@ -1,7 +1,7 @@
 package ru.coutvv.timeloop.state;
 
 import ru.coutvv.timeloop.bot.Context;
-import ru.coutvv.timeloop.ioservice.ChatObserver;
+import ru.coutvv.timeloop.io.ChatObserver;
 
 import java.util.function.BooleanSupplier;
 
@@ -18,7 +18,7 @@ public abstract class State implements ChatObserver {
      */
     private boolean skipLever = false;
 
-    State(Context context) {
+    protected State(Context context) {
         this.context = context;
     }
 
